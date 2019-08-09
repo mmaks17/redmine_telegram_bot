@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+    oggyredminebot:
+        build: ./
+        links:
+            - psql
+        depends_on:
+             - psql
+        restart: always
+
+        environment:
+             - TG_TOKEN=yourtoken
+             - REDMINE_URL=http://redmine.example.com
+             - REDMINE_API=redmineip
+             - PG_HOST=172.17.0.1
+             - PG_PORT=5432
+             - PG_PASSWORD=botuser
+             - PG_USER=botpassword
+             - PG_DB=bot
+
+    psql:
+        #  restart: always
+        image: postgres:11.4-alpine
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            - DEBUG=true
+
+            - POSTGRES_PASSWORD=botpassword
+            - POSTGRES_USER=botuser
+            - POSTGRES_DB=bot
+        volumes:
+            - ./botall.sql:/docker-entrypoint-initdb.d/db.sql
+            - ./data:/var/lib/postgresql/data
+

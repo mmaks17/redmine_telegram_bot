@@ -1,0 +1,6 @@
+BotRedmine
+data/*
+vendor/*
+deploy.sh
+.idea
+docker-compose.yml
